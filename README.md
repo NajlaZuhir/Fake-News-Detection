@@ -1,12 +1,12 @@
 # 🧠 Fake News Detection — Project Summary
 
 Fake news refers to intentionally misleading or false information presented as real news. Because it often resembles legitimate journalism, detecting it automatically is a challenging task.  
-This project implements **multiple machine learning and deep learning models** to classify news as **Real** or **Fake**, and finally combines the best models using an **ensemble voting technique** for improved reliability.
+This project implements **multiple machine learning and deep learning models** to classify news as **Real** or **Fake**. It also uses an **ensemble voting technique** for improved reliability.
 
 ---
 
 ## 📌 Dataset
-Kaggle Fake News Detection Dataset  
+**[Kaggle Fake News Detection Dataset](https://www.kaggle.com/datasets/clmentbisaillon/fake-and-real-news-dataset)**
 Contains labeled news articles from multiple sources with two labels:
 
 - **0 — Real**
@@ -53,7 +53,7 @@ This ensemble combines:
 - **TF-IDF + Logistic Regression**
 - **LSTM Neural Network**
 
-Final prediction = weighted average of model probabilities (Fake class),  
+Final prediction = weighted average of model probabilities for fake and real class,  
 leading to smoother and more stable results than relying on one model alone.
 
 ---
@@ -64,21 +64,19 @@ A lightweight web demo was built to showcase real-time predictions.
 
 ### Backend
 ✔ Implemented using **FastAPI**  
-✔ Loads the trained Logistic Regression TF-IDF model  
+✔ Loads the simplest trained Logistic Regression TF-IDF model  
 ✔ Returns prediction + confidence score in JSON format  
 
 ### Frontend
 ✔ Clean HTML/CSS interface  
 ✔ Paste news → get prediction instantly  
-✔ Confidence logic:
-- If predicted **Real → show Real confidence**
-- If predicted **Fake → show Fake confidence**
+✔ Outputs Real or Fake with Confidence Score.
 
 ---
 
 ## ✅ Summary
 
-This project demonstrates a full workflow for Fake News Detection:
+This project demonstrates a full workflow using multiple types of Models for Fake News Detection:
 
 - Text cleaning and preprocessing  
 - Classical ML, Deep Learning (LSTM), and Transformer-based models  
