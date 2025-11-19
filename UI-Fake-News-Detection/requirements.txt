@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+scikit-learn
+joblib
+pydantic
+python-multipart
+
+# pip install -r requirements.txt

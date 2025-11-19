@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fake News Detector</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <div class="card">
+    <h1>Fake News Detector</h1>
+    <p class="subtitle">Paste any news headline or article and let the model estimate if it's Fake or Real.</p>
+
+    <textarea id="newsText" placeholder="Type or paste news text here..."></textarea>
+    <button id="analyzeBtn">Analyze</button>
+
+    <div id="result" class="result hidden"></div>
+    <div id="error" class="error"></div>
+  </div>
+
+  <script>
+    const btn = document.getElementById("analyzeBtn");
+    const textArea = document.getElementById("newsText");
+    const resultDiv = document.getElementById("result");
+    const errorDiv = document.getElementById("error");
+
+    async function analyze() {
+      const text = textArea.value.trim();
+      errorDiv.textContent = "";
+      resultDiv.className = "result hidden";
+      resultDiv.textContent = "";
+
+      if (!text) {
+        errorDiv.textContent = "Please enter some text first.";
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = "Analyzing...";
+
+      try {
+        const resp = await fetch("/predict", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: "",
+            text: text,
+            use_sep: true
+          })
+        });
+
+        if (!resp.ok) {
+          const msg = await resp.text();
+          throw new Error("Backend error (" + resp.status + "): " + msg);
+        }
+
+        const data = await resp.json();
+        const labelText = data.label_text || (data.pred_label === 1 ? "Fake" : "Real");
+
+        let probFake = data.confidence;
+        let probReal = 1 - probFake;
+
+        let confidence =
+          data.pred_label === 1
+            ? (probFake * 100).toFixed(2)
+            : (probReal * 100).toFixed(2);
+
+
+        resultDiv.className = "result " + (data.pred_label === 1 ? "fake" : "real");
+
+        resultDiv.innerHTML =
+          '<span class="label">' + labelText + "</span>" +
+          "<span> Confidence: " + confidence + "%</span>";
+
+
+      } catch (err) {
+        console.error(err);
+        errorDiv.textContent = "Failed to analyze: " + err.message;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Analyze";
+      }
+    }
+
+    btn.addEventListener("click", analyze);
+    textArea.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
+        analyze();
+      }
+    });
+  </script>
+</body>
+</html>
