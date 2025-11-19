@@ -37,7 +37,7 @@ A deep learning model designed to capture **sequential relationships** and **wor
 ### **C) Pretrained BERT (HuggingFace)**
 A transformer-based language model tested in **inference mode** (no fine-tuning):
 - Loaded using `transformers.pipeline("text-classification")`
-- Model used: `dhruvpal/fake-news-bert`
+- Model used: **[`dhruvpal/fake-news-bert`](https://huggingface.co/dhruvpal/fake-news-bert)**
 - Demonstrated excellent contextual understanding  
 **Achieved accuracy: 0.99**
 
